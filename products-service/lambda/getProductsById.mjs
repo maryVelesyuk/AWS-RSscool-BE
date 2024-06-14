@@ -19,6 +19,7 @@ export const handler = async (event) => {
       },
       body: JSON.stringify(product),
     };
+    
   } catch (err) {
     return {
       statusCode: 404,
