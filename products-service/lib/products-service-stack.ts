@@ -14,7 +14,7 @@ export class ProductsServiceStack extends cdk.Stack {
         PRODUCT_AWS_REGION: 'eu-west-1',
       },
       code: lambda.Code.fromAsset('lambda'),
-      handler: 'getProducts.handler',
+      handler: 'getProductsList.handler',
     });
 
     const productByIdFunction = new lambda.Function(this, 'ProductByIdFunction', {
@@ -23,7 +23,7 @@ export class ProductsServiceStack extends cdk.Stack {
         PRODUCT_AWS_REGION: 'eu-west-1',
       },
       code: lambda.Code.fromAsset('lambda'),
-      handler: 'getProductById.handler',
+      handler: 'getProductsById.handler',
     });
 
     const api = new apigateway.RestApi(this, 'ProductApi', {
