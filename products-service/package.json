@@ -8,7 +8,8 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "fill": "cd fillData && aws dynamodb batch-write-item --request-items file://$FILE"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",

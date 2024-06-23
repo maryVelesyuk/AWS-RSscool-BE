@@ -1,0 +1,54 @@
+{
+  "products": [
+      {
+          "PutRequest": {
+              "Item": {
+                  "id": { "S": "b4d3cade-af73-427a-ac7c-7217147b690c" },
+                  "title": { "S": "X-MEN: HEIR OF APOCALYPSE" },
+                  "description": { "S": "X-MEN: HEIR OF APOCALYPSE" },
+                  "price": { "N": "15" }
+              }
+          }
+      },
+      {
+          "PutRequest": {
+              "Item": {
+                "id": { "S": "977849cb-1b59-4f6a-856e-a69b1d0dd35b" },
+                "title": { "S": "DEADPOOL" },
+                "description": { "S": "DEADPOOL" },
+                "price": { "N": "20" }
+            }
+          }
+      },
+      {
+        "PutRequest": {
+            "Item": {
+              "id": { "S": "1adaa3d5-4dad-4633-8ce2-45a800bc98b2" },
+              "title": { "S": "ULTIMATE X-MEN (2024)" },
+              "description": { "S": "ULTIMATE X-MEN (2024)" },
+              "price": { "N": "15" }
+          }
+        }
+      },
+      {
+        "PutRequest": {
+            "Item": {
+              "id": { "S": "2ebef42f-d0aa-46df-80fb-9de1d36f30c8" },
+              "title": { "S": "X-MEN: AGE OF APOCALYPSE ONE SHOT (2005)" },
+              "description": { "S": "X-MEN: AGE OF APOCALYPSE ONE SHOT (2005)" },
+              "price": { "N": "138" }
+          }
+        }
+    },
+   {
+      "PutRequest": {
+          "Item": {
+            "id": { "S": "e49c2621-0245-4507-8c33-77d24bbf7f0f" },
+            "title": { "S": "DEADPOOL" },
+            "description": { "S": "DEADPOOL" },
+            "price": { "N": "12" }
+        }
+      }
+  }
+  ]
+}
