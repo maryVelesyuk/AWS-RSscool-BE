@@ -43,7 +43,7 @@ export const handler = async ( event) => {
     await client.send(new PutItemCommand(newProduct));
     await client.send(new PutItemCommand(newStock));
 
-    return sendResponse(200, {...newProduct.Item, count: newStock.Item.count});
+    return sendResponse(200, "Product was created");
 
   } catch (error) {
 
