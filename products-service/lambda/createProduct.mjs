@@ -4,9 +4,9 @@ import { randomUUID } from "crypto";
 import { sendResponse } from './utils.mjs';
 
 export const handler = async ( event) => {
+  console.log(`Request: method - ${event.httpMethod}, path - ${event.path}, body - ${event.body}`);
   
   try {
-
     const {title, description, price, count} = JSON.parse(event.body);
 
     if ( !title || typeof title !== "string" ||

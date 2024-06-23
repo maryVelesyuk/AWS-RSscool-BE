@@ -2,7 +2,8 @@ import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 import { sendResponse } from './utils.mjs';
 
-export const handler = async () => {
+export const handler = async (event) => {
+  console.log(`Request: method - ${event.httpMethod}, path - ${event.path}`);
 
   const productParams = {
     TableName: "products"

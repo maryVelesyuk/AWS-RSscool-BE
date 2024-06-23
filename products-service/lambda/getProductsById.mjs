@@ -5,6 +5,8 @@ import { sendResponse } from './utils.mjs';
 export const handler = async (
   event
 ) => {
+  console.log(`Request: method - ${event.httpMethod}, path - ${event.path}, id - ${event.pathParameters.id}`);
+  
   const productParams = {
     TableName: "products",
     Key: marshall({ id: event.pathParameters.id }),
