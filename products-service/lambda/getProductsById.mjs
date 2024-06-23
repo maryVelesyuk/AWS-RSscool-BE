@@ -29,6 +29,6 @@ export const handler = async (
     return sendResponse(200, result);
 
   } catch (error) {
-    return sendResponse(404, error.message);
+    return sendResponse(500, error.message);
   }
 };

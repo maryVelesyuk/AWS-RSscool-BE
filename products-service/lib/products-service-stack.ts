@@ -2,7 +2,6 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { Role, ServicePrincipal, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 export class ProductsServiceStack extends cdk.Stack {
@@ -44,6 +43,18 @@ export class ProductsServiceStack extends cdk.Stack {
       role
     });
 
+    const createProductFunction = new lambda.Function(this, 'CreateProductFunction', {
+      runtime: lambda.Runtime.NODEJS_20_X,
+      environment: {
+        PRODUCT_AWS_REGION: 'eu-west-1',
+        PRODUCTS_TABLE: "products",
+        STOCKS_TABLE: 'stocks',
+      },
+      code: lambda.Code.fromAsset('lambda'),
+      handler: 'createProduct.handler',
+      role
+    });
+
     const api = new apigateway.RestApi(this, 'ProductApi', {
       restApiName: 'Products service',
       defaultCorsPreflightOptions: {
@@ -55,6 +66,7 @@ export class ProductsServiceStack extends cdk.Stack {
 
     const productsResource = api.root.addResource('products');
     productsResource.addMethod('GET', new apigateway.LambdaIntegration(productsFunction));
+    productsResource.addMethod('POST', new apigateway.LambdaIntegration(createProductFunction));
 
     const productByIDResource = productsResource.addResource('{id}');
     productByIDResource.addMethod('GET', new apigateway.LambdaIntegration(productByIdFunction));
