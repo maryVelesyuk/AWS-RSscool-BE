@@ -1,13 +1,13 @@
 import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from "crypto";
 import { sendResponse } from './utils.mjs';
 
 export const handler = async ( event) => {
 
   const newProductData = JSON.parse(event.body);
 
-  const id = uuidv4();
+  const id = randomUUID();
 
   const newProduct = {
     TableName: "products",
