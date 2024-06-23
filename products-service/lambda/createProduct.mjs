@@ -4,30 +4,39 @@ import { randomUUID } from "crypto";
 import { sendResponse } from './utils.mjs';
 
 export const handler = async ( event) => {
-
-  const newProductData = JSON.parse(event.body);
-
-  const id = randomUUID();
-
-  const newProduct = {
-    TableName: "products",
-    Item: marshall({
-        id: id,
-        title: newProductData.title,
-        description: newProductData.description,
-        price: newProductData.price,
-    }),
-  };
-
-  const newStock = {
-    TableName: "stocks",
-    Item: marshall({
-        product_id: id,
-        count: newProductData.count,
-    }),
-  };
-
+  
   try {
+
+    const {title, description, price, count} = JSON.parse(event.body);
+
+    if ( !title || typeof title !== "string" ||
+      !description || typeof description !== "string" ||
+      !price || typeof price !== "number" ||
+      !count || typeof count !== "number" ||
+      count <= 0 || price <= 0
+    ) {
+      return sendResponse(400, "Invalid product data")
+    }
+
+    const id = randomUUID();
+
+    const newProduct = {
+      TableName: "products",
+      Item: marshall({
+          id,
+          title,
+          description,
+          price,
+      }),
+    };
+
+    const newStock = {
+      TableName: "stocks",
+      Item: marshall({
+          product_id: id,
+          count,
+      }),
+    };
 
     const client = new DynamoDBClient({});
 
