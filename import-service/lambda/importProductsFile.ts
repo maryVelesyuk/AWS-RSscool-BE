@@ -2,49 +2,46 @@ import type { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-const headers = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-};
-
-const BUCKET_NAME = process.env.BUCKET_NAME ?? "aws-import-service-bucket";
-
-const client = new S3Client();
+const s3client = new S3Client();
 
 export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
-  console.log("Log:", event);
 
-  const { queryStringParameters } = event;
+  const parameters = event.queryStringParameters;
 
   try {
-    if (!queryStringParameters?.name) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: "Invalid file name" }),
-      };
+    if (!parameters?.name) {
+      throw new Error("File name is requered")
     }
 
-    const command = new PutObjectCommand({
-      Bucket: BUCKET_NAME,
-      Key: `uploaded/${queryStringParameters.name}`,
+    const putCommand = new PutObjectCommand({
+      Bucket: "awstask5",
+      Key: `uploaded/${parameters.name}`,
     });
-    const signedUrl = await getSignedUrl(client, command, { expiresIn: 3600 });
+
+    const signedUrl = await getSignedUrl(s3client, putCommand, { expiresIn: 60 });
 
     return {
       statusCode: 200,
       body: signedUrl,
-      headers: { ...headers, "Content-Type": "text/plain" },
+      headers: { 
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Content-Type": "text/plain" 
+      },
     };
-  } catch (e) {
-    console.error("Error:", e);
+  } catch (e: any) {
 
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Internal server error" }),
-      headers,
+      body: JSON.stringify({ message: e.message }),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      }
     };
   }
 };
