@@ -20,7 +20,7 @@ export const handler = async (
       Key: `uploaded/${parameters.name}`,
     });
 
-    const signedUrl = await getSignedUrl(s3client, putCommand, { expiresIn: 60 });
+    const signedUrl = await getSignedUrl(s3client, putCommand, { expiresIn: 6000 });
 
     return {
       statusCode: 200,
@@ -32,6 +32,7 @@ export const handler = async (
         "Content-Type": "text/plain" 
       },
     };
+    
   } catch (e: any) {
 
     return {
