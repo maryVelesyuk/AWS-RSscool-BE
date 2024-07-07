@@ -8,7 +8,6 @@ const dynamoDB = DynamoDBDocumentClient.from(client);
 const sns = new SNSClient({ region: 'eu-west-1' });
 
 export const handler = async (event: SQSEvent) => {
-  console.log('Incomig request:', event);
 
   try {
     const body = JSON.parse(event.Records[0].body);
@@ -58,7 +57,7 @@ export const handler = async (event: SQSEvent) => {
   const publishCommand = new PublishCommand(snsMessage);
 
   await sns.send(publishCommand);
-  console.log(`Product created: ${body})}`);
+  console.log(`Product was created: ${body})}`);
 
   } catch (error) {
     console.error('Error:', error);
