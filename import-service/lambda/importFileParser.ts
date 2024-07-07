@@ -7,10 +7,12 @@ import {
   DeleteObjectCommand,
   CopyObjectCommand,
 } from "@aws-sdk/client-s3";
+import { SQS } from 'aws-sdk';
 
 const BUCKET_NAME = "awstask5";
 
 const client = new S3Client();
+const sqs = new SQS({ region: 'eu-west-1' });
 
 export const handler = async (
   event: S3Event
@@ -32,8 +34,11 @@ export const handler = async (
       const csvData = await new Promise((resolve, reject): void => {
         (result.Body as Readable)
           .pipe(csvParser({ separator: "," }))
-          .on("data", (data) => {
-            console.log(data);
+          .on("data", async (data) => {
+            await sqs.sendMessage({
+              QueueUrl: 'https://sqs.eu-west-1.amazonaws.com/637423426971/aws-rsscool-catalogItemsQueue',
+              MessageBody: JSON.stringify(data),
+            }).promise();
           })
           .on("end", () => resolve)
           .on("error", reject);
